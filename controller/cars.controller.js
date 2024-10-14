@@ -3,9 +3,14 @@ const carsService = require("../service/cars.service");
 // addCar
 async function addCar(req, res) {
   try {
+    const userRole_id = req.user.roleId;
     const car = req.body;
     const files = req.files;
     const images = files.map((file) => file.path);
+
+    if (![1].includes(userRole_id)) {
+        return res.status(403).json({ error: true, payload: "Unauthorized. Only Admins can create agencies."});
+}
 
     const result = await carsService.createCar(car, images);
 
