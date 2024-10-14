@@ -3,11 +3,11 @@ const app = express();
 const cors = require("cors");
 const path = require('path');
 const routes = require("./routes/index.routes");
+const PORT = 4002;
 
 app.use(express.json());
 app.use(cors());
 
-// Serve static images from the 'uploads' folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/", routes);
@@ -15,7 +15,7 @@ app.use("/", routes);
 const db = require("./models");
 
 db.sequelize.sync({ alter: true }).then(() => {
-  app.listen(3002, () => {
-    console.log("SERVER RUNNING ON PORT 3002");
+  app.listen(PORT, () => {
+    console.log("SERVER RUNNING ON PORT " , PORT);
   });
 });

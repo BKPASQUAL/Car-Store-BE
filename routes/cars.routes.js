@@ -8,6 +8,7 @@ function getCarsRoutes() {
   router.use(express.json());
 
   router.post("/addCar", uploadImages, carsController.addCar);
+  router.get("/getAllCars", carsController.getAllCars);
 
   return router;
 }
