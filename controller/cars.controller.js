@@ -1,11 +1,13 @@
 const carsService = require("../service/cars.service");
 
-// Create New Car
+// addCar
 async function addCar(req, res) {
   try {
-    const car = req.body; // Extract car data from request body
+    const car = req.body; 
+    const files = req.files; 
+    const images = files.map(file => file.path);
 
-    const result = await carsService.createCar(car);
+    const result = await carsService.createCar(car, images);
 
     return res.status(result.status).json({
       error: result.error,

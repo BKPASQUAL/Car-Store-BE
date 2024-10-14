@@ -1,7 +1,10 @@
 const { Cars } = require("../models");
 
-async function createCar(car) {
+//addCar Service
+async function createCar(car, images) {
   try {
+    car.CarPhotos = images;
+
     await Cars.create(car);
 
     return {
