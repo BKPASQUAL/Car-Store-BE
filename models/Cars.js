@@ -8,10 +8,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DOUBLE,
       allowNull: true,
     },
-    registrationYear: {
-      type: DataTypes.DOUBLE,
-      allowNull: true,
-    },
     exteriorColour: {
       type: DataTypes.STRING,
       allowNull: true,

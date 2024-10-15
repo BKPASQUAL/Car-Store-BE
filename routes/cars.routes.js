@@ -12,6 +12,7 @@ function getCarsRoutes() {
   router.get("/getAllCars", carsController.getAllCars);
   router.get("/getCarById/:id", carsController.getCarById);
   router.get("/sortCarsByBrands/:id", carsController.sortCarByBrands);
+  router.get("/getPagination", carsController.getPagination); 
 
   return router;
 }

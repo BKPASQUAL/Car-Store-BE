@@ -135,4 +135,58 @@ async function sortCarByBrands(brandId) {
   }
 }
 
-module.exports = { createCar, getAllCars, getCarById, sortCarByBrands };
+// getPagination Service
+async function getPagination(page = 1, pageSize = 9) {
+  try {
+    const offset = (page - 1) * pageSize;
+    const { rows: cars, count: totalCars } = await Cars.findAndCountAll({
+      attributes: ["id", "carName", "CarPhotos"],
+      include: [
+        {
+          model: Brands,
+          as: "brand",
+          attributes: ["brandName", "id"],
+        },
+      ],
+      limit: pageSize,
+      offset: offset,
+      raw: true,
+      nest: true,
+    });
+
+    if (!cars || cars.length === 0) {
+      return {
+        error: true,
+        status: 404,
+        payload: "No Cars Available",
+      };
+    }
+
+    const formattedData = cars.map((car) => ({
+      id: car.id,
+      carName: car.carName,
+      CarPhotos: car.CarPhotos,
+      brandName: car.brand.brandName,
+      brandId: car.brand.id,
+    }));
+
+    return {
+      error: false,
+      status: 200,
+      payload: {
+        cars: formattedData,
+        pagination: {
+          currentPage: page,
+          pageSize: pageSize,
+          totalCars: totalCars,
+          totalPages: Math.ceil(totalCars / pageSize),
+        },
+      },
+    };
+  } catch (error) {
+    console.error("Error getting Cars with pagination:", error);
+    throw error;
+  }
+}
+
+module.exports = { createCar, getAllCars, getCarById, sortCarByBrands, getPagination };

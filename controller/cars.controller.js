@@ -113,4 +113,39 @@ async function sortCarByBrands(req, res) {
     });
   }
 }
-module.exports = { addCar, getAllCars, getCarById, sortCarByBrands };
+
+// Get All Cars with Pagination
+async function getPagination(req, res) {
+  try {
+    const { page = 1, pageSize = 9 } = req.query;
+    const result = await carsService.getPagination(
+      Number(page),
+      Number(pageSize)
+    );
+
+    if (result.error) {
+      return res.status(result.status).json({
+        error: true,
+        payload: result.payload,
+      });
+    } else {
+      return res.status(result.status).json({
+        error: false,
+        payload: result.payload,
+      });
+    }
+  } catch (error) {
+    console.log("Error getting Cars with pagination in controller: ", error);
+    return res.status(500).json({
+      error: true,
+      payload: error.message || "Internal Server Error",
+    });
+  }
+}
+module.exports = {
+  addCar,
+  getAllCars,
+  getCarById,
+  sortCarByBrands,
+  getPagination,
+};
