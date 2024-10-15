@@ -1,4 +1,4 @@
-const { Cars } = require("../models");
+const { Cars, Brands } = require("../models"); // Ensure both models are imported
 
 //addCar Service
 async function createCar(car, images) {
@@ -21,7 +21,17 @@ async function createCar(car, images) {
 //get All Cars
 async function getAllCars() {
   try {
-    const cars = await Cars.findAll();
+    const cars = await Cars.findAll({
+      attributes: ['id', 'carName', 'CarPhotos'], 
+      include: [
+        {
+          model: Brands, 
+          as: 'brand',
+          attributes: ['brandName' , 'id' ] 
+        }
+      ]
+
+    });
 
     if (!cars) {
       return {
@@ -42,4 +52,42 @@ async function getAllCars() {
   }
 }
 
-module.exports = { createCar, getAllCars };
+async function getCarById(id) {
+  try {
+    const car = await Cars.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!car) {
+      return {
+        error: true,
+        status: 404,
+        payload: "No Car Data Found",
+      };
+    } else {
+      return {
+        error: false,
+        status: 200,
+        payload: car,
+      };
+    }
+  } catch (error) {
+    console.error("Error getting Car by ID service :", error);
+    throw error;
+  }
+}
+
+// async function sortCarByBrands(brandId) {
+//   try {
+//     const car = await Cars.findAll({
+//       where:{
+//         brandId : brandId,
+//       }
+//     })
+//   }
+  
+// }
+
+module.exports = { createCar, getAllCars, getCarById };
