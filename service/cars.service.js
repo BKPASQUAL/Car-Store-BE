@@ -276,6 +276,33 @@ async function deleteCar(id) {
   }
 }
 
+//Update Car
+async function updateCar(id, updatedData) {
+  try {
+    const car = await Cars.findByPk(id);
+
+    if (!car) {
+      return {
+        error: true,
+        status: 404,
+        payload: "Car not found!",
+      };
+    } else {
+      const updatedCar = await car.update(updatedData);
+
+      return {
+        error: false,
+        status: 200,
+        payload: "Car updated successfully!",
+        updatedCar: car,
+      };
+    }
+  } catch (error) {
+    console.error("Error Updating Car Service : ", error);
+    throw error;
+  }
+}
+
 module.exports = {
   createCar,
   getAllCars,
@@ -284,4 +311,5 @@ module.exports = {
   getPagination,
   sortCarByBrandsPagination,
   deleteCar,
+  updateCar,
 };

@@ -148,7 +148,11 @@ async function sortCarByBrandsPagination(req, res) {
     const { id } = req.params; // Brand ID
     const { page = 1, pageSize = 9 } = req.query;
 
-    const result = await carsService.sortCarByBrandsPagination(id, Number(page), Number(pageSize));
+    const result = await carsService.sortCarByBrandsPagination(
+      id,
+      Number(page),
+      Number(pageSize)
+    );
 
     if (result.error) {
       return res.status(result.status).json({
@@ -162,7 +166,10 @@ async function sortCarByBrandsPagination(req, res) {
       });
     }
   } catch (error) {
-    console.error("Error sorting cars by brand with pagination in controller:", error);
+    console.error(
+      "Error sorting cars by brand with pagination in controller:",
+      error
+    );
     return res.status(500).json({
       error: true,
       payload: error.message || "Internal Server Error",
@@ -170,39 +177,74 @@ async function sortCarByBrandsPagination(req, res) {
   }
 }
 
-async function deleteCar(req,res) {
-  try{
+async function deleteCar(req, res) {
+  try {
     const userRole_id = req.user.roleId;
     const { id } = req.params;
 
     if (![1].includes(userRole_id)) {
-      return res.status(403).json({ error: true, payload: "Unauthorized. Only Admins can delete car."});
-    }
-
-      const result = await carsService.deleteCar(id);
-
-      if(result.error) {
-        return res.status(result.status).json ({
-            error: true,
-            payload: result.payload
-        })
-    } else {
-        return res.status(result.status).json ({
-            error: false,
-            payload: result.payload
-        })
-    } 
-
-
-    } catch (error) {
-        console.log("Error Deleting Car Controller: ", error);
-        return res.status(500).json({
+      return res.status(403).json({
         error: true,
-        payload: error
-        })
+        payload: "Unauthorized. Only Admins can delete car.",
+      });
     }
+
+    const result = await carsService.deleteCar(id);
+
+    if (result.error) {
+      return res.status(result.status).json({
+        error: true,
+        payload: result.payload,
+      });
+    } else {
+      return res.status(result.status).json({
+        error: false,
+        payload: result.payload,
+      });
+    }
+  } catch (error) {
+    console.log("Error Deleting Car Controller: ", error);
+    return res.status(500).json({
+      error: true,
+      payload: error,
+    });
+  }
 }
 
+async function updateCar(req, res) {
+  try {
+    const userRole_id = req.user.roleId;
+    const { id } = req.params;
+    const updatedData = req.body;
+
+    if (![1].includes(userRole_id)) {
+      return res.status(403).json({
+        error: true,
+        payload: "Unauthorized. Only Admins can update car details.",
+      });
+    }
+
+    const result = await carsService.updateCar(id, updatedData);
+
+    if (result.error) {
+      return res.status(result.status).json({
+        error: true,
+        payload: result.payload,
+      });
+    } else {
+      return res.status(result.status).json({
+        error: false,
+        payload: result.payload,
+      });
+    }
+  } catch (error) {
+    console.log("Error updating car controller: ", error);
+    return res.status(500).json({
+      error: true,
+      payload: error.message || "Internal Server Error",
+    });
+  }
+}
 
 module.exports = {
   addCar,
@@ -210,6 +252,7 @@ module.exports = {
   getCarById,
   sortCarByBrands,
   getPagination,
-  sortCarByBrandsPagination, 
-  deleteCar 
+  sortCarByBrandsPagination,
+  deleteCar,
+  updateCar,
 };
