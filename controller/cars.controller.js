@@ -170,11 +170,46 @@ async function sortCarByBrandsPagination(req, res) {
   }
 }
 
+async function deleteCar(req,res) {
+  try{
+    const userRole_id = req.user.roleId;
+    const { id } = req.params;
+
+    if (![1].includes(userRole_id)) {
+      return res.status(403).json({ error: true, payload: "Unauthorized. Only Admins can delete car."});
+    }
+
+      const result = await carsService.deleteCar(id);
+
+      if(result.error) {
+        return res.status(result.status).json ({
+            error: true,
+            payload: result.payload
+        })
+    } else {
+        return res.status(result.status).json ({
+            error: false,
+            payload: result.payload
+        })
+    } 
+
+
+    } catch (error) {
+        console.log("Error Deleting Car Controller: ", error);
+        return res.status(500).json({
+        error: true,
+        payload: error
+        })
+    }
+}
+
+
 module.exports = {
   addCar,
   getAllCars,
   getCarById,
   sortCarByBrands,
   getPagination,
-  sortCarByBrandsPagination,  // Add the new controller method here
+  sortCarByBrandsPagination, 
+  deleteCar 
 };

@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const { Cars, Brands } = require("../models");
 
 //addCar Service
@@ -245,11 +246,42 @@ async function sortCarByBrandsPagination(brandId, page = 1, pageSize = 9) {
   }
 }
 
+//Delete a Car
+async function deleteCar(id) {
+  try {
+    const car = await Cars.findByPk(id);
+
+    if (!car) {
+      return {
+        error: true,
+        status: 404,
+        payload: "Car not found",
+      };
+    } else {
+      await Cars.destroy({
+        where: {
+          id: id,
+        },
+      });
+
+      return {
+        error: false,
+        status: 200,
+        payload: "Car successfully deleted!",
+      };
+    }
+  } catch (error) {
+    console.error("Error deleteing Car service: ", error);
+    throw error;
+  }
+}
+
 module.exports = {
   createCar,
   getAllCars,
   getCarById,
   sortCarByBrands,
   getPagination,
-  sortCarByBrandsPagination,  // Add the new function here
+  sortCarByBrandsPagination,
+  deleteCar,
 };

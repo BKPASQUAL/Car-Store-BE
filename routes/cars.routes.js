@@ -14,6 +14,7 @@ function getCarsRoutes() {
   router.get("/sortCarsByBrands/:id", carsController.sortCarByBrands);
   router.get("/getPagination", carsController.getPagination);
   router.get("/getPaginatedCarsByBrand/:id", carsController.sortCarByBrandsPagination);
+  router.delete("/deleteCar/:id",authMiddleware, carsController.deleteCar);
 
 
   return router;
