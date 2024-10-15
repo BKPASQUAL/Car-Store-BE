@@ -22,15 +22,14 @@ async function createCar(car, images) {
 async function getAllCars() {
   try {
     const cars = await Cars.findAll({
-      attributes: ['id', 'carName', 'CarPhotos'], 
+      attributes: ["id", "carName", "CarPhotos"],
       include: [
         {
-          model: Brands, 
-          as: 'brand',
-          attributes: ['brandName' , 'id' ] 
-        }
-      ]
-
+          model: Brands,
+          as: "brand",
+          attributes: ["brandName", "id"],
+        },
+      ],
     });
 
     if (!cars) {
@@ -79,15 +78,39 @@ async function getCarById(id) {
   }
 }
 
-// async function sortCarByBrands(brandId) {
-//   try {
-//     const car = await Cars.findAll({
-//       where:{
-//         brandId : brandId,
-//       }
-//     })
-//   }
-  
-// }
+async function sortCarByBrands(brandId) {
+  try {
+    const cars = await Cars.findAll({
+      where: {
+        brandId: brandId,
+      },
+      attributes: ["id", "carName", "CarPhotos"], 
+      include: [
+        {
+          model: Brands,
+          as: "brand",
+          attributes: ["brandName", "id"], 
+        },
+      ],
+    });
 
-module.exports = { createCar, getAllCars, getCarById };
+    if (!cars || cars.length === 0) {
+      return {
+        error: true,
+        status: 404,
+        payload: "No car data available!",
+      };
+    } else {
+      return {
+        error: false,
+        status: 200,
+        payload: cars,
+      };
+    }
+  } catch (error) {
+    console.error("Error getting cars by brand ID:", error);
+    throw error;
+  }
+}
+
+module.exports = { createCar, getAllCars, getCarById, sortCarByBrands };

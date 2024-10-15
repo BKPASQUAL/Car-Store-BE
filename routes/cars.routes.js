@@ -11,6 +11,7 @@ function getCarsRoutes() {
   router.post("/addCar", uploadImages, authMiddleware, carsController.addCar);
   router.get("/getAllCars", carsController.getAllCars);
   router.get("/getCarById/:id", carsController.getCarById);
+  router.get("/sortCarsByBrands/:id", carsController.sortCarByBrands);
 
   return router;
 }
