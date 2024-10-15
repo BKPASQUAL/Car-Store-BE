@@ -142,10 +142,39 @@ async function getPagination(req, res) {
     });
   }
 }
+// Sort cars by brand with pagination
+async function sortCarByBrandsPagination(req, res) {
+  try {
+    const { id } = req.params; // Brand ID
+    const { page = 1, pageSize = 9 } = req.query;
+
+    const result = await carsService.sortCarByBrandsPagination(id, Number(page), Number(pageSize));
+
+    if (result.error) {
+      return res.status(result.status).json({
+        error: true,
+        payload: result.payload,
+      });
+    } else {
+      return res.status(result.status).json({
+        error: false,
+        payload: result.payload,
+      });
+    }
+  } catch (error) {
+    console.error("Error sorting cars by brand with pagination in controller:", error);
+    return res.status(500).json({
+      error: true,
+      payload: error.message || "Internal Server Error",
+    });
+  }
+}
+
 module.exports = {
   addCar,
   getAllCars,
   getCarById,
   sortCarByBrands,
   getPagination,
+  sortCarByBrandsPagination,  // Add the new controller method here
 };

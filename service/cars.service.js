@@ -1,4 +1,4 @@
-const { Cars, Brands } = require("../models"); 
+const { Cars, Brands } = require("../models");
 
 //addCar Service
 async function createCar(car, images) {
@@ -189,4 +189,67 @@ async function getPagination(page = 1, pageSize = 9) {
   }
 }
 
-module.exports = { createCar, getAllCars, getCarById, sortCarByBrands, getPagination };
+async function sortCarByBrandsPagination(brandId, page = 1, pageSize = 9) {
+  try {
+    const offset = (page - 1) * pageSize;
+    const { rows: cars, count: totalCars } = await Cars.findAndCountAll({
+      where: {
+        brandId: brandId,
+      },
+      attributes: ["id", "carName", "CarPhotos"],
+      include: [
+        {
+          model: Brands,
+          as: "brand",
+          attributes: ["brandName", "id"],
+        },
+      ],
+      limit: pageSize,
+      offset: offset,
+      raw: true,
+      nest: true,
+    });
+
+    if (!cars || cars.length === 0) {
+      return {
+        error: true,
+        status: 404,
+        payload: "No cars found for the selected brand!",
+      };
+    }
+
+    const formattedData = cars.map((car) => ({
+      id: car.id,
+      carName: car.carName,
+      CarPhotos: car.CarPhotos,
+      brandName: car.brand.brandName,
+      brandId: car.brand.id,
+    }));
+
+    return {
+      error: false,
+      status: 200,
+      payload: {
+        cars: formattedData,
+        pagination: {
+          currentPage: page,
+          pageSize: pageSize,
+          totalCars: totalCars,
+          totalPages: Math.ceil(totalCars / pageSize),
+        },
+      },
+    };
+  } catch (error) {
+    console.error("Error sorting cars by brand with pagination:", error);
+    throw error;
+  }
+}
+
+module.exports = {
+  createCar,
+  getAllCars,
+  getCarById,
+  sortCarByBrands,
+  getPagination,
+  sortCarByBrandsPagination,  // Add the new function here
+};
