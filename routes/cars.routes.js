@@ -8,16 +8,15 @@ function getCarsRoutes() {
 
   router.use(express.json());
 
-  router.post("/addCar", uploadImages, authMiddleware, carsController.addCar);
-  router.get("/getAllCars", carsController.getAllCars);
-  router.get("/getCarById/:id", carsController.getCarById);
-  router.get("/sortCarsByBrands/:id", carsController.sortCarByBrands);
-  router.get("/getPagination", carsController.getPagination);
-  router.get("/getPaginatedCarsByBrand/:id", carsController.sortCarByBrandsPagination);
-  router.delete("/deleteCar/:id",authMiddleware, carsController.deleteCar);
-  router.patch("/updateCar/:id",uploadImages , authMiddleware, carsController.updateCar);
-  router.get("/getLastSixCar", carsController.getLastSixCars);
-
+  router.post("/", uploadImages, authMiddleware, carsController.addCar);
+  router.get("/latest", carsController.getLastSixCars);
+  router.get("/", carsController.getAllCars);
+  router.get("/pagination", carsController.getPagination);
+  router.get("/:id", carsController.getCarById);
+  router.get("/sortBrand/:id", carsController.sortCarByBrands);
+  router.get("/paginationBrand/:id", carsController.sortCarByBrandsPagination);
+  router.delete("/:id", authMiddleware, carsController.deleteCar);
+  router.patch("/:id", uploadImages, authMiddleware, carsController.updateCar);
 
   return router;
 }
