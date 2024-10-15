@@ -1,4 +1,4 @@
-const { Cars, Brands } = require("../models"); // Ensure both models are imported
+const { Cars, Brands } = require("../models"); 
 
 //addCar Service
 async function createCar(car, images) {
