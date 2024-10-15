@@ -303,6 +303,51 @@ async function updateCar(id, updatedData) {
   }
 }
 
+// Get the last six cars
+async function getLastSixCars() {
+  try {
+    const cars = await Cars.findAll({
+      attributes: ["id", "carName", "CarPhotos"],
+      include: [
+        {
+          model: Brands,
+          as: "brand",
+          attributes: ["brandName", "id"],
+        },
+      ],
+      order: [["createdAt", "DESC"]], 
+      limit: 6,
+      raw: true,
+      nest: true,
+    });
+
+    if (!cars || cars.length === 0) {
+      return {
+        error: true,
+        status: 404,
+        payload: "No Cars Available",
+      };
+    }
+
+    const formattedData = cars.map((car) => ({
+      id: car.id,
+      carName: car.carName,
+      CarPhotos: car.CarPhotos,
+      brandName: car.brand.brandName,
+      brandId: car.brand.id,
+    }));
+
+    return {
+      error: false,
+      status: 200,
+      payload: formattedData,
+    };
+  } catch (error) {
+    console.error("Error getting the last six cars:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   createCar,
   getAllCars,
@@ -312,4 +357,5 @@ module.exports = {
   sortCarByBrandsPagination,
   deleteCar,
   updateCar,
+  getLastSixCars
 };

@@ -246,6 +246,32 @@ async function updateCar(req, res) {
   }
 }
 
+
+// Get the last six cars
+async function getLastSixCars(req, res) {
+  try {
+    const result = await carsService.getLastSixCars();
+
+    if (result.error) {
+      return res.status(result.status).json({
+        error: true,
+        payload: result.payload,
+      });
+    } else {
+      return res.status(result.status).json({
+        error: false,
+        payload: result.payload,
+      });
+    }
+  } catch (error) {
+    console.error("Error getting the last six cars in controller:", error);
+    return res.status(500).json({
+      error: true,
+      payload: error.message || "Internal Server Error",
+    });
+  }
+}
+
 module.exports = {
   addCar,
   getAllCars,
@@ -255,4 +281,5 @@ module.exports = {
   sortCarByBrandsPagination,
   deleteCar,
   updateCar,
+  getLastSixCars, 
 };
