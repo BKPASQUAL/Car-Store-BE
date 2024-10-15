@@ -30,26 +30,38 @@ async function getAllCars() {
           attributes: ["brandName", "id"],
         },
       ],
+      raw: true,
+      nest: true,
     });
 
-    if (!cars) {
+    if (!cars || cars.length === 0) {
       return {
         error: true,
         status: 404,
         payload: "No Cars Available",
       };
-    } else {
-      return {
-        error: false,
-        status: 200,
-        payload: cars,
-      };
     }
+
+    const formattedData = cars.map((car) => ({
+      id: car.id,
+      carName: car.carName,
+      CarPhotos: car.CarPhotos,
+      brandName: car.brand.brandName,
+      brandId: car.brand.id,
+    }));
+
+    return {
+      error: false,
+      status: 200,
+      payload: formattedData,
+    };
   } catch (error) {
     console.error("Error getting Cars service:", error);
     throw error;
   }
 }
+
+module.exports = { createCar, getAllCars, getCarById, sortCarByBrands };
 
 async function getCarById(id) {
   try {
@@ -84,14 +96,16 @@ async function sortCarByBrands(brandId) {
       where: {
         brandId: brandId,
       },
-      attributes: ["id", "carName", "CarPhotos"], 
+      attributes: ["id", "carName", "CarPhotos"],
       include: [
         {
           model: Brands,
           as: "brand",
-          attributes: ["brandName", "id"], 
+          attributes: ["brandName", "id"],
         },
       ],
+      raw: true,
+      nest: true,
     });
 
     if (!cars || cars.length === 0) {
@@ -100,13 +114,21 @@ async function sortCarByBrands(brandId) {
         status: 404,
         payload: "No car data available!",
       };
-    } else {
-      return {
-        error: false,
-        status: 200,
-        payload: cars,
-      };
     }
+
+    const formattedData = cars.map((car) => ({
+      id: car.id,
+      carName: car.carName,
+      CarPhotos: car.CarPhotos,
+      brandName: car.brand.brandName,
+      brandId: car.brand.id,
+    }));
+
+    return {
+      error: false,
+      status: 200,
+      payload: formattedData,
+    };
   } catch (error) {
     console.error("Error getting cars by brand ID:", error);
     throw error;
