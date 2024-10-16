@@ -99,10 +99,11 @@ async function getCarById(id) {
       engine: car.engine,
       bodyType: car.bodyType,
       transmission: car.transmission,
+      fuelType:car.fuelType,
       price: car.price,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName, 
-      brandId: car.brand.id,          
+      brandId: car.brand.id,                
     };
     return {
       error: false,
