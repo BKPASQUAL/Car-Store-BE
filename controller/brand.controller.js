@@ -1,9 +1,27 @@
 const brandService = require("../service/brand.service");
 
-//add brand
 async function addBrand(req, res) {
     try {
+      const userRole_id = req.user.roleId;
       const brand = req.body;
+      const brandImage = req.file?.path;
+  
+      if (![1].includes(userRole_id)) {
+        return res.status(403).json({
+          error: true,
+          payload: "Unauthorized. Only Admins can create Cars.",
+        });
+      }
+  
+      if (!brandImage) {
+        return res.status(400).json({
+          error: true,
+          payload: "Brand image is required.",
+        });
+      }
+  
+      // Include brandImage in the brand object
+      brand.brandImage = brandImage;
   
       const result = await brandService.addBrand(brand);
   
