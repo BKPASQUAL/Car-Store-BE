@@ -4,22 +4,22 @@ const authMiddleware = require("../middleware/auth.middleware");
 const { uploadImage } = require("../middleware/user.images.middleware");
 
 function getUserRoutes() {
-    const router = express.Router();
+  const router = express.Router();
 
-    router.use(express.json());
-    router.post("/login", userController.loginUser);
+  router.use(express.json());
+  router.post("/login", userController.loginUser);
 
-    router.use(authMiddleware);
+  router.use(authMiddleware);
 
-    router.post("/registerUser", uploadImage, userController.registerUser);
-    router.get("/getUserRoles", userController.getUserRoles);
-    router.get("/getAllUsers", userController.getAllUsers);
-    router.get("/getUserById/:id", userController.getUserById);
-    router.get("/getSignedUser", userController.getSignedUser);   
-    router.patch("/updateUser/:id", userController.updateUser);
-    router.delete("/deleteUser/:id", userController.deleteUser);
+  router.post("/registerUser", uploadImage, userController.registerUser);
+  router.get("/getUserRoles", userController.getUserRoles);
+  router.get("/getAllUsers", userController.getAllUsers);
+  router.get("/getUserById/:id", userController.getUserById);
+  router.get("/getSignedUser", userController.getSignedUser);
+  router.patch("/updateUser/:id", userController.updateUser);
+  router.delete("/deleteUser/:id", userController.deleteUser);
 
-    return router;
+  return router;
 }
 
 module.exports = getUserRoutes();

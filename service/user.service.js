@@ -76,7 +76,7 @@ async function loginUser(username) {
             },
             include: {
                 model: Roles,
-                as: 'roles',
+                as: 'role',
                 attributes: ['role']
             }
         }

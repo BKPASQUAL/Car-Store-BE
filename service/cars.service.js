@@ -23,7 +23,7 @@ async function createCar(car, images) {
 async function getAllCars() {
   try {
     const cars = await Cars.findAll({
-      attributes: ["id", "carName", "CarPhotos"],
+      attributes: ["id", "carName", "CarPhotos","price","manufacturingYear"],
       include: [
         {
           model: Brands,
@@ -46,6 +46,8 @@ async function getAllCars() {
     const formattedData = cars.map((car) => ({
       id: car.id,
       carName: car.carName,
+      price:car.price,
+      manufacturingYear:car.manufacturingYear,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
@@ -97,7 +99,7 @@ async function sortCarByBrands(brandId) {
       where: {
         brandId: brandId,
       },
-      attributes: ["id", "carName", "CarPhotos"],
+      attributes: ["id", "carName", "CarPhotos","price","manufacturingYear"],
       include: [
         {
           model: Brands,
@@ -120,6 +122,8 @@ async function sortCarByBrands(brandId) {
     const formattedData = cars.map((car) => ({
       id: car.id,
       carName: car.carName,
+      price:car.price,
+      manufacturingYear:car.manufacturingYear,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
@@ -141,7 +145,7 @@ async function getPagination(page = 1, pageSize = 9) {
   try {
     const offset = (page - 1) * pageSize;
     const { rows: cars, count: totalCars } = await Cars.findAndCountAll({
-      attributes: ["id", "carName", "CarPhotos"],
+      attributes: ["id", "carName", "CarPhotos","price","manufacturingYear"],
       include: [
         {
           model: Brands,
@@ -166,6 +170,8 @@ async function getPagination(page = 1, pageSize = 9) {
     const formattedData = cars.map((car) => ({
       id: car.id,
       carName: car.carName,
+      price:car.price,
+      manufacturingYear:car.manufacturingYear,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
@@ -197,7 +203,7 @@ async function sortCarByBrandsPagination(brandId, page = 1, pageSize = 9) {
       where: {
         brandId: brandId,
       },
-      attributes: ["id", "carName", "CarPhotos"],
+      attributes: ["id", "carName", "CarPhotos","price","manufacturingYear"],
       include: [
         {
           model: Brands,
@@ -222,6 +228,8 @@ async function sortCarByBrandsPagination(brandId, page = 1, pageSize = 9) {
     const formattedData = cars.map((car) => ({
       id: car.id,
       carName: car.carName,
+      price:car.price,
+      manufacturingYear:car.manufacturingYear,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
