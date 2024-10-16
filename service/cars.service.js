@@ -315,7 +315,7 @@ async function updateCar(id, updatedData) {
 async function getLastSixCars() {
   try {
     const cars = await Cars.findAll({
-      attributes: ["id", "carName", "CarPhotos"],
+      attributes: ["id", "carName", "CarPhotos","price","manufacturingYear"],
       include: [
         {
           model: Brands,
@@ -340,6 +340,8 @@ async function getLastSixCars() {
     const formattedData = cars.map((car) => ({
       id: car.id,
       carName: car.carName,
+      price:car.price,
+      manufacturingYear:car.manufacturingYear,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
