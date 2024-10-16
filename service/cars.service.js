@@ -72,26 +72,49 @@ async function getCarById(id) {
       where: {
         id: id,
       },
+      include: [
+        {
+          model: Brands,
+          as: "brand",
+          attributes: ["brandName","id"],
+        },
+      ],
     });
 
     if (!car) {
       return {
         error: true,
         status: 404,
-        payload: "No Car Data Found",
-      };
-    } else {
-      return {
-        error: false,
-        status: 200,
-        payload: car,
+        payload: "No car data available!",
       };
     }
+
+    const formattedData = {
+      id: car.id,
+      carName: car.carName,
+      manufacturingYear: car.manufacturingYear,
+      exteriorColour: car.exteriorColour,
+      interiorColour: car.interiorColour,
+      driverPosition: car.driverPosition,
+      engine: car.engine,
+      bodyType: car.bodyType,
+      transmission: car.transmission,
+      price: car.price,
+      CarPhotos: car.CarPhotos,
+      brandName: car.brand.brandName, 
+      brandId: car.brand.id,          
+    };
+    return {
+      error: false,
+      status: 200,
+      payload: formattedData,
+    };
   } catch (error) {
-    console.error("Error getting Car by ID service :", error);
+    console.error("Error getting Car by ID service:", error);
     throw error;
   }
 }
+
 
 async function sortCarByBrands(brandId) {
   try {
