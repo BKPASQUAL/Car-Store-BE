@@ -6,12 +6,13 @@ async function createCar(car, images) {
   try {
     car.CarPhotos = images;
 
-    await Cars.create(car);
-
+    const data = await Cars.create(car);
+    console.log("data",data)
     return {
       error: false,
       status: 200,
       payload: "Car successfully created!",
+      data: data,
     };
   } catch (error) {
     console.error("Error creating Car service:", error);
@@ -23,7 +24,14 @@ async function createCar(car, images) {
 async function getAllCars() {
   try {
     const cars = await Cars.findAll({
-      attributes: ["id", "carName", "CarPhotos","price","manufacturingYear"],
+      attributes: [
+        "id",
+        "carName",
+        "CarPhotos",
+        "price",
+        "manufacturingYear",
+        "fuelType",
+      ],
       include: [
         {
           model: Brands,
@@ -46,8 +54,9 @@ async function getAllCars() {
     const formattedData = cars.map((car) => ({
       id: car.id,
       carName: car.carName,
-      price:car.price,
-      manufacturingYear:car.manufacturingYear,
+      price: car.price,
+      manufacturingYear: car.manufacturingYear,
+      fuelType: car.fuelType,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
@@ -76,7 +85,7 @@ async function getCarById(id) {
         {
           model: Brands,
           as: "brand",
-          attributes: ["brandName","id"],
+          attributes: ["brandName", "id"],
         },
       ],
     });
@@ -99,11 +108,11 @@ async function getCarById(id) {
       engine: car.engine,
       bodyType: car.bodyType,
       transmission: car.transmission,
-      fuelType:car.fuelType,
+      fuelType: car.fuelType,
       price: car.price,
       CarPhotos: car.CarPhotos,
-      brandName: car.brand.brandName, 
-      brandId: car.brand.id,                
+      brandName: car.brand.brandName,
+      brandId: car.brand.id,
     };
     return {
       error: false,
@@ -116,14 +125,13 @@ async function getCarById(id) {
   }
 }
 
-
 async function sortCarByBrands(brandId) {
   try {
     const cars = await Cars.findAll({
       where: {
         brandId: brandId,
       },
-      attributes: ["id", "carName", "CarPhotos","price","manufacturingYear"],
+      attributes: ["id", "carName", "CarPhotos", "price", "manufacturingYear"],
       include: [
         {
           model: Brands,
@@ -146,8 +154,8 @@ async function sortCarByBrands(brandId) {
     const formattedData = cars.map((car) => ({
       id: car.id,
       carName: car.carName,
-      price:car.price,
-      manufacturingYear:car.manufacturingYear,
+      price: car.price,
+      manufacturingYear: car.manufacturingYear,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
@@ -169,7 +177,7 @@ async function getPagination(page = 1, pageSize = 9) {
   try {
     const offset = (page - 1) * pageSize;
     const { rows: cars, count: totalCars } = await Cars.findAndCountAll({
-      attributes: ["id", "carName", "CarPhotos","price","manufacturingYear"],
+      attributes: ["id", "carName", "CarPhotos", "price", "manufacturingYear"],
       include: [
         {
           model: Brands,
@@ -194,8 +202,8 @@ async function getPagination(page = 1, pageSize = 9) {
     const formattedData = cars.map((car) => ({
       id: car.id,
       carName: car.carName,
-      price:car.price,
-      manufacturingYear:car.manufacturingYear,
+      price: car.price,
+      manufacturingYear: car.manufacturingYear,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
@@ -227,7 +235,7 @@ async function sortCarByBrandsPagination(brandId, page = 1, pageSize = 9) {
       where: {
         brandId: brandId,
       },
-      attributes: ["id", "carName", "CarPhotos","price","manufacturingYear"],
+      attributes: ["id", "carName", "CarPhotos", "price", "manufacturingYear"],
       include: [
         {
           model: Brands,
@@ -252,8 +260,8 @@ async function sortCarByBrandsPagination(brandId, page = 1, pageSize = 9) {
     const formattedData = cars.map((car) => ({
       id: car.id,
       carName: car.carName,
-      price:car.price,
-      manufacturingYear:car.manufacturingYear,
+      price: car.price,
+      manufacturingYear: car.manufacturingYear,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
@@ -339,7 +347,7 @@ async function updateCar(id, updatedData) {
 async function getLastSixCars() {
   try {
     const cars = await Cars.findAll({
-      attributes: ["id", "carName", "CarPhotos","price","manufacturingYear"],
+      attributes: ["id", "carName", "CarPhotos", "price", "manufacturingYear"],
       include: [
         {
           model: Brands,
@@ -347,7 +355,7 @@ async function getLastSixCars() {
           attributes: ["brandName", "id"],
         },
       ],
-      order: [["createdAt", "DESC"]], 
+      order: [["createdAt", "DESC"]],
       limit: 6,
       raw: true,
       nest: true,
@@ -364,8 +372,8 @@ async function getLastSixCars() {
     const formattedData = cars.map((car) => ({
       id: car.id,
       carName: car.carName,
-      price:car.price,
-      manufacturingYear:car.manufacturingYear,
+      price: car.price,
+      manufacturingYear: car.manufacturingYear,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
@@ -391,5 +399,5 @@ module.exports = {
   sortCarByBrandsPagination,
   deleteCar,
   updateCar,
-  getLastSixCars
+  getLastSixCars,
 };

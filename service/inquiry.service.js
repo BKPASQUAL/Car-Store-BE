@@ -14,6 +14,8 @@ async function addInquiry(inquiry) {
     console.error("Error creating inquiry service:", error);
     throw error;
   }
+  
 }
+
 
 module.exports = { addInquiry };
