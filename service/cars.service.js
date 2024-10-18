@@ -7,7 +7,7 @@ async function createCar(car, images) {
     car.CarPhotos = images;
 
     const data = await Cars.create(car);
-    console.log("data",data)
+    console.log("data", data);
     return {
       error: false,
       status: 200,
@@ -31,6 +31,8 @@ async function getAllCars() {
         "price",
         "manufacturingYear",
         "fuelType",
+        "engine",
+        "exteriorColour",
       ],
       include: [
         {
@@ -59,6 +61,8 @@ async function getAllCars() {
       fuelType: car.fuelType,
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
+      engine: car.engine,
+      exteriorColour: car.exteriorColour,
       brandId: car.brand.id,
     }));
 
