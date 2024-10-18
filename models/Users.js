@@ -22,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      dob: {
-        type: DataTypes.DATEONLY,  
+      gender: {
+        type: DataTypes.STRING,  
         allowNull: true,
       },
       address: {

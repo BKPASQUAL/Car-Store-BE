@@ -3,7 +3,7 @@ const { Users, Roles } = require("../models");
 const bcrypt = require("bcrypt");
 
 //Register User
-async function registerUser(firstName, lastName, email, contactNo, dob, address, username, hashPassword,roleId, image ) {
+async function registerUser(firstName, lastName, email, contactNo, gender, address, username, hashPassword,roleId, image ) {
     try { 
         const usernameExist = await Users.findOne({
             where: {
@@ -46,7 +46,7 @@ async function registerUser(firstName, lastName, email, contactNo, dob, address,
             lastName: lastName,
             email: email,
             contactNo: contactNo,
-            dob: dob, 
+            gender: gender, 
             address: address,
             username: username,
             password: hashPassword,
