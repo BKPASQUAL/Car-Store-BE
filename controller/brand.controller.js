@@ -153,5 +153,6 @@ async function updateBrand(req, res) {
 
 module.exports = {
   addBrand,
-  getAllBrands
+  getAllBrands,
+  getBrandById
 };
