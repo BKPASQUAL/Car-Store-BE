@@ -155,5 +155,6 @@ module.exports = {
   addBrand,
   getAllBrands,
   getBrandById,
-  deleteBrand
+  deleteBrand,
+  updateBrand,
 };
