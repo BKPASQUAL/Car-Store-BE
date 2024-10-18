@@ -8,8 +8,11 @@ function getBrandRoutes() {
 
   router.use(express.json());
 
-  // Apply the brandImage middleware for file uploads
   router.post("/", authMiddleware, brandImage, brandController.addBrand);
+  router.get("/", brandController.getAllBrands);
+  router.get("/:id", brandController.getBrandById);
+  router.delete("/:id", authMiddleware, brandController.deleteBrand);
+  router.patch("/:id", authMiddleware, brandImage, brandController.updateBrand);
 
   return router;
 }
