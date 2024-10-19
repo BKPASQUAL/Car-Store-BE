@@ -134,4 +134,5 @@ async function getInquiryByID(id) {
 
 module.exports = {
   addInquiry,
+  getAllInquiry,
 };
