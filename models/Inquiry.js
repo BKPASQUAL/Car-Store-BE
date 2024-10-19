@@ -1,3 +1,5 @@
+const { BOOLEAN } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   const Inquiry = sequelize.define("Inquiry", {
     name: {
@@ -23,7 +25,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    responsed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   });
+  
 
   return Inquiry;
 };

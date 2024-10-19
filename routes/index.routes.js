@@ -8,7 +8,7 @@ const brandRoutes = require("./brand.routes");
 function routes() {
   const router = express.Router();
 
-  router.use("/user", userRoutes); 
+  router.use("/users", userRoutes);
   router.use("/cars", carsRoute);
   router.use("/inquiry", inquiryRoutes);
   router.use("/brand", brandRoutes);

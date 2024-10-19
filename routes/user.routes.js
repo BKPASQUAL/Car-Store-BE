@@ -11,13 +11,12 @@ function getUserRoutes() {
 
   router.use(authMiddleware);
 
-  router.post("/registerUser", uploadImage, userController.registerUser);
-  router.get("/getUserRoles", userController.getUserRoles);
-  router.get("/getAllUsers", userController.getAllUsers);
-  router.get("/getUserById/:id", userController.getUserById);
-  router.get("/getSignedUser", userController.getSignedUser);
-  router.patch("/updateUser/:id", userController.updateUser);
-  router.delete("/deleteUser/:id", userController.deleteUser);
+  router.post("/register", uploadImage, userController.registerUser);
+  router.get("/roles", userController.getUserRoles);
+  router.get("/", userController.getAllUsers);
+  router.get("/:id", userController.getUserById);
+  router.patch("/:id", userController.updateUser);
+  router.delete("/:id", userController.deleteUser);
 
   return router;
 }

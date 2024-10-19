@@ -7,7 +7,6 @@ async function createCar(car, images) {
     car.CarPhotos = images;
 
     const data = await Cars.create(car);
-    console.log("data", data);
     return {
       error: false,
       status: 200,
