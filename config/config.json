@@ -2,13 +2,13 @@
   "development": {
     "username": "root",
     "password": "1234",
-    "database": "carstore",
+    "database": "carStores",
     "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": null,
+    "password": "1234",
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
@@ -16,8 +16,8 @@
   "production": {
     "username": "root",
     "password": "1234",
-    "database": "medicence",
-    "host": " 44.208.32.102",
+    "database": "carStores",
+    "host": "3.104.75.209",
     "dialect": "mysql"
   }
 }
