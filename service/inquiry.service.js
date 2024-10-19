@@ -136,4 +136,5 @@ module.exports = {
   addInquiry,
   getAllInquiry,
   markAsResponse,
+  getRecentInquiry,
 };
