@@ -394,6 +394,8 @@ async function getLastSixCars() {
   }
 }
 
+
+//cars count with barnds
 module.exports = {
   createCar,
   getAllCars,
