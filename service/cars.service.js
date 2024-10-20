@@ -1,5 +1,5 @@
 const { where } = require("sequelize");
-const { Cars, Brands } = require("../models");
+const { Cars, Brands,Sequelize } = require("../models");
 
 //addCar Service
 async function createCar(car, images) {
@@ -396,6 +396,46 @@ async function getLastSixCars() {
 
 
 //cars count with barnds
+async function getBrandsWithCarCount() {
+  try {
+    const brands = await Brands.findAll({
+      attributes: [
+        "id",
+        "brandName",
+        [Sequelize.fn("COUNT", Sequelize.col("Cars.id")), "carCount"] // Count cars
+      ],
+      include: [
+        {
+          model: Cars,
+          as: "cars",
+          attributes: [], // Don't need car details, only the count
+        },
+      ],
+      group: ["Brands.id"], // Group by Brand ID
+      raw: true,
+      nest: true,
+    });
+
+    if (!brands || brands.length === 0) {
+      return {
+        error: true,
+        status: 404,
+        payload: "No Brands Available",
+      };
+    }
+
+    return {
+      error: false,
+      status: 200,
+      payload: brands,
+    };
+  } catch (error) {
+    console.error("Error getting brands with car count:", error);
+    throw error;
+  }
+}
+
+
 module.exports = {
   createCar,
   getAllCars,
@@ -406,4 +446,5 @@ module.exports = {
   deleteCar,
   updateCar,
   getLastSixCars,
+  getBrandsWithCarCount,
 };

@@ -272,6 +272,32 @@ async function getLastSixCars(req, res) {
   }
 }
 
+
+// Get Brands with Car Count
+async function getBrandsWithCarCount(req, res) {
+  try {
+    const result = await carsService.getBrandsWithCarCount();
+
+    if (result.error) {
+      return res.status(result.status).json({
+        error: true,
+        payload: result.payload,
+      });
+    } else {
+      return res.status(result.status).json({
+        error: false,
+        payload: result.payload,
+      });
+    }
+  } catch (error) {
+    console.error("Error getting brands with car count:", error);
+    return res.status(500).json({
+      error: true,
+      payload: error.message || "Internal Server Error",
+    });
+  }
+}
+
 module.exports = {
   addCar,
   getAllCars,
@@ -282,4 +308,6 @@ module.exports = {
   deleteCar,
   updateCar,
   getLastSixCars, 
+  getBrandsWithCarCount,
+
 };
