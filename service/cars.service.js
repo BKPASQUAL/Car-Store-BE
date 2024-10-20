@@ -1,5 +1,5 @@
-const { where } = require("sequelize");
-const { Cars, Brands,Sequelize } = require("../models");
+const Sequelize = require('sequelize');
+const { Cars, Brands } = require("../models");
 
 //addCar Service
 async function createCar(car, images) {
@@ -396,19 +396,20 @@ async function getLastSixCars() {
 
 
 //cars count with barnds
+
 async function getBrandsWithCarCount() {
   try {
     const brands = await Brands.findAll({
       attributes: [
         "id",
         "brandName",
-        [Sequelize.fn("COUNT", Sequelize.col("Cars.id")), "carCount"] // Count cars
+        [Sequelize.fn("COUNT", Sequelize.col("cars.id")), "carCount"] // Count cars
       ],
       include: [
         {
           model: Cars,
-          as: "cars",
-          attributes: [], // Don't need car details, only the count
+          as: "cars", // Make sure this matches the alias defined in the association
+          attributes: [], // We only want the count, not the car details
         },
       ],
       group: ["Brands.id"], // Group by Brand ID
