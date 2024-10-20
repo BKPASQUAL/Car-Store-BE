@@ -40,6 +40,7 @@ async function getAllCars() {
           attributes: ["brandName", "id"],
         },
       ],
+      order: [["createdAt", "DESC"]],
       raw: true,
       nest: true,
     });
