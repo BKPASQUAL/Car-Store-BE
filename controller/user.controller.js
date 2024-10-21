@@ -211,30 +211,32 @@ async function updateUser(req, res) {
         const { id } = req.params;
         const userData = req.body;
 
-        delete userData.password;
+        // Remove the `roleId` from userData if present to prevent unauthorized role changes
+        delete userData.roleId;
 
+        // Only admins can update users
         if (![1].includes(userRole_id)) {
-            return res.status(403).json({ error: true, payload: "Unauthorized. Only Admins can update users." });
+            return res.status(403).json({ error: true, payload: "Unauthorized. Only admins can update users." });
         }
         
         const result = await userService.updateUser(id, userData);
 
-        if(result.error) {
-            return res.status(result.status).json ({
+        if (result.error) {
+            return res.status(result.status).json({
                 error: true,
                 payload: result.payload
-            })
+            });
         } else {
-            return res.status(result.status).json ({
+            return res.status(result.status).json({
                 error: false,
                 payload: result.payload
-            })
+            });
         }
     } catch (error) {
-        console.log("Error Updating User Controller: ", error);
+        console.error("Error updating user controller: ", error);
         return res.status(500).json({
             error: true,
-            payload: error
+            payload: error.message
         });
     }
 }
