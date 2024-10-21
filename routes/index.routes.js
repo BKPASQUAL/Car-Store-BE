@@ -11,7 +11,7 @@ function routes() {
   router.use("/users", userRoutes);
   router.use("/cars", carsRoute);
   router.use("/inquiry", inquiryRoutes);
-  router.use("/brand", brandRoutes);
+  router.use("/brands", brandRoutes);
   
 
   return router;

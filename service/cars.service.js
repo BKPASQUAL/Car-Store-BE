@@ -37,7 +37,7 @@ async function getAllCars() {
         {
           model: Brands,
           as: "brand",
-          attributes: ["brandName", "id"],
+          attributes: ["brandName", "id","brandImage"],
         },
       ],
       order: [["createdAt", "DESC"]],
@@ -64,6 +64,7 @@ async function getAllCars() {
       engine: car.engine,
       exteriorColour: car.exteriorColour,
       brandId: car.brand.id,
+      brandImage:car.brand.brandImage
     }));
 
     return {
@@ -321,7 +322,8 @@ async function deleteCar(id) {
 }
 
 //Update Car
-async function updateCar(id, updatedData) {
+// Update Car
+async function updateCar(id, updatedData, images) {
   try {
     const car = await Cars.findByPk(id);
 
@@ -332,7 +334,13 @@ async function updateCar(id, updatedData) {
         payload: "Car not found!",
       };
     } else {
-      const updatedCar = await car.update(updatedData);
+      // If images are provided, update CarPhotos
+      if (images && images.length > 0) {
+        updatedData.CarPhotos = images;
+      }
+
+      // Update car with the new data
+      await car.update(updatedData);
 
       return {
         error: false,

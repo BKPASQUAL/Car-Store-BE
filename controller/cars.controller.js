@@ -216,12 +216,19 @@ async function updateCar(req, res) {
     const userRole_id = req.user.roleId;
     const { id } = req.params;
     const updatedData = req.body;
+    const files = req.files;
 
     if (![1].includes(userRole_id)) {
       return res.status(403).json({
         error: true,
         payload: "Unauthorized. Only Admins can update car details.",
       });
+    }
+
+    // Check if files were uploaded and extract their paths
+    if (files && files.length > 0) {
+      const images = files.map((file) => file.path);
+      updatedData.CarPhotos = images;
     }
 
     const result = await carsService.updateCar(id, updatedData);
