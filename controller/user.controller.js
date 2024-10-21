@@ -6,7 +6,7 @@ const { sign } = require("jsonwebtoken");
 async function registerUser(req, res) {
     try {
         const userRole_id = req.user.roleId;
-        const {firstName, lastName,email,contactNo, gender, address, username, password, roleId } = req.body;
+        const {name,email,contactNo, gender, address, username, password, roleId } = req.body;
         const image = req.file.path;
 
         if (![1].includes(userRole_id)) {
@@ -14,12 +14,12 @@ async function registerUser(req, res) {
         }
 
         // Validate user input
-        if (!(email && firstName && lastName && password && username && roleId)) {
+        if (!(email && name  && password && username && roleId)) {
             return res.status(400).json({ error: true, payload: "All input is required" });
         }
 
         const hashPassword = await bcrypt.hash(password, 10);
-        const result = await userService.registerUser(firstName, lastName,email,contactNo, gender, address, username, hashPassword, roleId, image);
+        const result = await userService.registerUser(name,email,contactNo, gender, address, username, hashPassword, roleId, image);
         
         if(result.error) {
             return res.status(result.status).json ({

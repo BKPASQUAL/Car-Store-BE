@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const { Cars, Brands } = require("../models");
 
 //addCar Service
@@ -37,7 +37,7 @@ async function getAllCars() {
         {
           model: Brands,
           as: "brand",
-          attributes: ["brandName", "id","brandImage"],
+          attributes: ["brandName", "id", "brandImage"],
         },
       ],
       order: [["createdAt", "DESC"]],
@@ -64,7 +64,7 @@ async function getAllCars() {
       engine: car.engine,
       exteriorColour: car.exteriorColour,
       brandId: car.brand.id,
-      brandImage:car.brand.brandImage
+      brandImage: car.brand.brandImage,
     }));
 
     return {
@@ -402,7 +402,6 @@ async function getLastSixCars() {
   }
 }
 
-
 //cars count with barnds
 
 async function getBrandsWithCarCount() {
@@ -411,7 +410,7 @@ async function getBrandsWithCarCount() {
       attributes: [
         "id",
         "brandName",
-        [Sequelize.fn("COUNT", Sequelize.col("cars.id")), "carCount"] // Count cars
+        [Sequelize.fn("COUNT", Sequelize.col("cars.id")), "carCount"], // Count cars
       ],
       include: [
         {
@@ -443,7 +442,6 @@ async function getBrandsWithCarCount() {
     throw error;
   }
 }
-
 
 module.exports = {
   createCar,
