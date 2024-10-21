@@ -253,7 +253,6 @@ async function updateCar(req, res) {
   }
 }
 
-
 // Get the last six cars
 async function getLastSixCars(req, res) {
   try {
@@ -278,7 +277,6 @@ async function getLastSixCars(req, res) {
     });
   }
 }
-
 
 // Get Brands with Car Count
 async function getBrandsWithCarCount(req, res) {
@@ -314,7 +312,6 @@ module.exports = {
   sortCarByBrandsPagination,
   deleteCar,
   updateCar,
-  getLastSixCars, 
+  getLastSixCars,
   getBrandsWithCarCount,
-
 };
