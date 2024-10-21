@@ -18,8 +18,12 @@ async function addInquiry(inquiry) {
 
 async function getAllInquiry() {
   try {
-    const inquiries = await Inquiry.findAll();
-
+    const inquiries = await Inquiry.findAll({
+      order: [["createdAt", "DESC"]],
+      raw: true,
+      nest: true,
+    });
+    
     if (!inquiries || inquiries.length === 0) {
       return {
         error: true,
