@@ -187,7 +187,7 @@ async function getPagination(page = 1, pageSize = 9) {
         {
           model: Brands,
           as: "brand",
-          attributes: ["brandName", "id"],
+          attributes: ["brandName", "id" , "brandImage"],
         },
       ],
       limit: pageSize,
@@ -212,6 +212,7 @@ async function getPagination(page = 1, pageSize = 9) {
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
+      brandImage:car.brand.brandImage
     }));
 
     return {
@@ -245,7 +246,7 @@ async function sortCarByBrandsPagination(brandId, page = 1, pageSize = 9) {
         {
           model: Brands,
           as: "brand",
-          attributes: ["brandName", "id"],
+          attributes: ["brandName", "id","brandImage"],
         },
       ],
       limit: pageSize,
@@ -270,6 +271,7 @@ async function sortCarByBrandsPagination(brandId, page = 1, pageSize = 9) {
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
+      brandImage:car.brand.brandImage,
     }));
 
     return {
@@ -364,7 +366,7 @@ async function getLastSixCars() {
         {
           model: Brands,
           as: "brand",
-          attributes: ["brandName", "id"],
+          attributes: ["brandName", "id","brandImage"],
         },
       ],
       order: [["createdAt", "DESC"]],
@@ -389,6 +391,7 @@ async function getLastSixCars() {
       CarPhotos: car.CarPhotos,
       brandName: car.brand.brandName,
       brandId: car.brand.id,
+      brandImage:car.brand.brandImage
     }));
 
     return {
