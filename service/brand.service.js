@@ -7,7 +7,7 @@ async function addBrand(brand) {
 
     return {
       error: false,
-      status: 200,
+      status: 201,
       payload: "Brand successfully created!",
     };
   } catch (error) {
@@ -24,7 +24,7 @@ async function getAllBrands() {
     if (!brands || brands.length === 0) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload: "No brands Available",
       };
     }

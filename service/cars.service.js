@@ -9,7 +9,7 @@ async function createCar(car, images) {
     const data = await Cars.create(car);
     return {
       error: false,
-      status: 200,
+      status: 201,
       payload: "Car successfully created!",
       data: data,
     };
@@ -48,7 +48,7 @@ async function getAllCars() {
     if (!cars || cars.length === 0) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload: "No Cars Available",
       };
     }
@@ -78,8 +78,6 @@ async function getAllCars() {
   }
 }
 
-module.exports = { createCar, getAllCars, getCarById, sortCarByBrands };
-
 async function getCarById(id) {
   try {
     const car = await Cars.findOne({
@@ -98,7 +96,7 @@ async function getCarById(id) {
     if (!car) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload: "No car data available!",
       };
     }
@@ -151,7 +149,7 @@ async function sortCarByBrands(brandId) {
     if (!cars || cars.length === 0) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload: "No car data available!",
       };
     }
@@ -199,7 +197,7 @@ async function getPagination(page = 1, pageSize = 9) {
     if (!cars || cars.length === 0) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload: "No Cars Available",
       };
     }
@@ -258,7 +256,7 @@ async function sortCarByBrandsPagination(brandId, page = 1, pageSize = 9) {
     if (!cars || cars.length === 0) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload: "No cars found for the selected brand!",
       };
     }
@@ -378,7 +376,7 @@ async function getLastSixCars() {
     if (!cars || cars.length === 0) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload: "No Cars Available",
       };
     }
@@ -430,7 +428,7 @@ async function getBrandsWithCarCount() {
     if (!brands || brands.length === 0) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload: "No Brands Available",
       };
     }

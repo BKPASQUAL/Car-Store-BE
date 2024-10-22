@@ -65,7 +65,7 @@ async function registerUser(
 
     return {
       error: false,
-      status: 200,
+      status: 201,
       payload: "User Successfully Created",
     };
   } catch (error) {
@@ -102,7 +102,7 @@ async function getUserRoles() {
     if (!roles) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload:
           "No User Roles Available. Please Create User Roles In The Database.",
       };
@@ -136,7 +136,7 @@ async function getAllUsers() {
     if (!users) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload: "No user data available!",
       };
     } else {
@@ -186,38 +186,41 @@ async function getUserById(id) {
 }
 
 //Update User
+// Update User
 async function updateUser(id, userData) {
-    try {
+  try {
       const user = await Users.findByPk(id);
-  
+
       if (!user) {
-        return {
-          error: true,
-          status: 404,
-          payload: "User doesn't exist!",
-        };
+          return {
+              error: true,
+              status: 404,
+              payload: "User doesn't exist!",
+          };
       }
-  
-      // If a new password is provided, hash it before saving
+
+      // Only hash and update password if it is provided in the userData and is not empty
       if (userData.password) {
-        const hashPassword = await bcrypt.hash(userData.password, 10);
-        userData.password = hashPassword;
+          userData.password = await bcrypt.hash(userData.password, 10);
+      } else {
+          // If no password is provided, delete it from userData to prevent updating it to undefined or empty
+          delete userData.password;
       }
-  
+
       // Update user data including the image if provided
       await user.update(userData);
-  
+
       return {
-        error: false,
-        status: 200,
-        payload: "User successfully updated!",
+          error: false,
+          status: 200,
+          payload: "User successfully updated!",
       };
-    } catch (error) {
+  } catch (error) {
       console.error("Error updating user service: ", error);
       throw error;
-    }
   }
-  
+}
+
 //Delete User
 async function deleteUser(id) {
   try {

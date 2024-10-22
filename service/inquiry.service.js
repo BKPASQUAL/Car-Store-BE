@@ -7,7 +7,7 @@ async function addInquiry(inquiry) {
 
     return {
       error: false,
-      status: 200,
+      status: 201,
       payload: "inquiry successfully created!",
     };
   } catch (error) {
@@ -27,7 +27,7 @@ async function getAllInquiry() {
     if (!inquiries || inquiries.length === 0) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload: "No inquiries available",
       };
     }
@@ -88,7 +88,7 @@ async function getRecentInquiry() {
     if (!inquiries || inquiries.length === 0) {
       return {
         error: true,
-        status: 404,
+        status: 204,
         payload: "No inquiries available",
       };
     }
