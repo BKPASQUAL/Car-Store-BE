@@ -321,7 +321,6 @@ async function deleteCar(id) {
   }
 }
 
-//Update Car
 // Update Car
 async function updateCar(id, updatedData, images) {
   try {
