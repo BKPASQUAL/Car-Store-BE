@@ -186,7 +186,6 @@ async function getUserById(id) {
 }
 
 //Update User
-// Update User
 async function updateUser(id, userData) {
   try {
       const user = await Users.findByPk(id);
@@ -199,15 +198,12 @@ async function updateUser(id, userData) {
           };
       }
 
-      // Only hash and update password if it is provided in the userData and is not empty
       if (userData.password) {
           userData.password = await bcrypt.hash(userData.password, 10);
       } else {
-          // If no password is provided, delete it from userData to prevent updating it to undefined or empty
           delete userData.password;
       }
 
-      // Update user data including the image if provided
       await user.update(userData);
 
       return {
