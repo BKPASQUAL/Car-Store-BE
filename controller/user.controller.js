@@ -211,14 +211,16 @@ async function updateUser(req, res) {
         const { id } = req.params;
         const userData = req.body;
 
-        // Remove the `roleId` from userData if present to prevent unauthorized role changes
-        delete userData.roleId;
-
         // Only admins can update users
         if (![1].includes(userRole_id)) {
             return res.status(403).json({ error: true, payload: "Unauthorized. Only admins can update users." });
         }
-        
+
+        // Handle image upload
+        if (req.file) {
+            userData.image = req.file.path;
+        }
+
         const result = await userService.updateUser(id, userData);
 
         if (result.error) {

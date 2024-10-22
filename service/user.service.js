@@ -186,40 +186,38 @@ async function getUserById(id) {
 }
 
 //Update User
-async function updateUser(id, userData, images) {
-  try {
-    const user = await Users.findByPk(id);
-
-    if (!user) {
+async function updateUser(id, userData) {
+    try {
+      const user = await Users.findByPk(id);
+  
+      if (!user) {
+        return {
+          error: true,
+          status: 404,
+          payload: "User doesn't exist!",
+        };
+      }
+  
+      // If a new password is provided, hash it before saving
+      if (userData.password) {
+        const hashPassword = await bcrypt.hash(userData.password, 10);
+        userData.password = hashPassword;
+      }
+  
+      // Update user data including the image if provided
+      await user.update(userData);
+  
       return {
-        error: true,
-        status: 404,
-        payload: "User doesn't exist!",
+        error: false,
+        status: 200,
+        payload: "User successfully updated!",
       };
+    } catch (error) {
+      console.error("Error updating user service: ", error);
+      throw error;
     }
-
-    // If a new password is provided, hash it before saving
-    if (userData.password) {
-      const hashPassword = await bcrypt.hash(userData.password, 10);
-      userData.password = hashPassword;
-    }
-    if (images && images.length > 0) {
-      updatedData.image = images;
-    }
-    // Update the user data
-    await user.update(userData);
-
-    return {
-      error: false,
-      status: 200,
-      payload: "User successfully updated!",
-    };
-  } catch (error) {
-    console.error("Error updating user service: ", error);
-    throw error;
   }
-}
-
+  
 //Delete User
 async function deleteUser(id) {
   try {
