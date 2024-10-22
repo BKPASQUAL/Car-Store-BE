@@ -120,33 +120,29 @@ async function deleteBrand(req, res) {
 // Update Brand
 async function updateBrand(req, res) {
   try {
-    const userRole_id = req.user.roleId;
     const { id } = req.params;
-    const updatedData = req.body; 
-    const brandImage = req.file?.path; 
+    const updatedData = req.body;
+    const image = req.file ? req.file.path : null; // Handle image if it's uploaded
 
-    if (![1].includes(userRole_id)) {
-      return res.status(403).json({
+    // Call the service to update brand including the image
+    const result = await brandService.updateBrand(id, updatedData, image);
+
+    if (result.error) {
+      return res.status(result.status).json({
         error: true,
-        payload: "Unauthorized. Only Admins can update brand details.",
+        payload: result.payload,
+      });
+    } else {
+      return res.status(result.status).json({
+        error: false,
+        payload: result.payload,
       });
     }
-
-    if (brandImage) {
-      updatedData.brandImage = brandImage;
-    }
-
-    const result = await brandService.updateBrand(id, updatedData);
-
-    return res.status(result.status).json({
-      error: result.error,
-      payload: result.payload,
-    });
   } catch (error) {
-    console.log("Error Update Brand Controller: ", error);
+    console.error("Error updating brand controller: ", error);
     return res.status(500).json({
       error: true,
-      payload: error.message || "Internal Server Error",
+      payload: error.message,
     });
   }
 }

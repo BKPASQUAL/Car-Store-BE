@@ -98,7 +98,8 @@ async function deleteBrand(id) {
   }
 }
 
-async function updateBrand(id, updatedData) {
+// Update Brand including image
+async function updateBrand(id, updatedData, image) {
   try {
     const brand = await Brands.findByPk(id);
 
@@ -108,21 +109,25 @@ async function updateBrand(id, updatedData) {
         status: 404,
         payload: "Brand not found!",
       };
-    } else {
-
-      await Brands.update(updatedData, {
-        where: { id }
-      });
-
-      return {
-        error: false,
-        status: 200,
-        payload: "Brand updated successfully!",
-        updatedBrand: updatedData,
-      };
     }
+
+    // If an image is provided, update the image path
+    if (image) {
+      updatedData.brandImage = image; // Add/overwrite the image field in the updated data
+    }
+
+    await Brands.update(updatedData, {
+      where: { id },
+    });
+
+    return {
+      error: false,
+      status: 200,
+      payload: "Brand updated successfully!",
+      updatedBrand: updatedData,
+    };
   } catch (error) {
-    console.error("Error Updating Brand Service: ", error);
+    console.error("Error updating Brand service: ", error);
     throw error;
   }
 }
